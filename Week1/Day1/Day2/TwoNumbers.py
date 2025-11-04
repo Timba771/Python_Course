@@ -1,0 +1,11 @@
+num_one, num_two = input("Enter two numbers (mit Komma getrennt): ").split(",")
+num_one = float(num_one)
+num_two = float(num_two)
+
+print("Zahl 1:", num_one)
+print("Zahl 2:", num_two)
+print("Summe:", num_one + num_two)
+print("Differenz:", num_one - num_two)
+print("Produkt:", num_one * num_two)
+print("Ganzzahldivision:", num_one // num_two)
+print("Rest:", num_one % num_two)
