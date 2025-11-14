@@ -3,7 +3,7 @@ import numpy as np
 import os
 import soundfile as sf
 
-sound_list = []
+sound_dic = {}
 seconds_recoring = 10.0
 
 
@@ -13,8 +13,8 @@ def show_menu():
     print("1) record") 
     print("2) play")
     print("3) quit")
-    option = int(input("enter number here: ").strip())
-    if option == 1 or option == 2 or option == 3:
+    option = input("enter number here: ").strip()
+    if option == "1" or option == "2" or option == "3":
         print("Option", option, "has been choosen.")
         return option
     else:
@@ -24,13 +24,13 @@ def record_sound(seconds: float, sampelrate: int = 16000, channels: int = 1, dty
     
     #Error Handling
     if seconds <= 0:
-        ValueError
+        raise ValueError ("seconds must be < 0")
     if sampelrate <= 0:
-        ValueError
+        raise ValueError ("samplerate must be < 0")
     if channels not in {1,2}:
-        ValueError
+        raise ValueError ("Channel wrong")
     if dtype != "float32":
-        ValueError 
+       raise ValueError ("Type is not float")
 
     #Frame callucaltion
     frames = int(seconds * sampelrate)
@@ -52,17 +52,18 @@ def save_wave(path, audio, samplerate):
         raise RuntimeError("Audio must be 2-dimensional ")
     if samplerate <= 0:
         raise RuntimeError("SampleRate must be over 0 ")
-    if os.path.exists(path):
-        raise FileExistsError("Fille Already Exists")
+    #if os.path.exists(path):
+        #raise FileExistsError("Fille Already Exists")
     
     sf.write(path, audio, samplerate)
+    return path
 
 
-
-def play_sound(audio ,samplerate):
+def play_sound(path):
     print("palysound")
-
-    sd.play(name)
+    audio, samplerate = sf.read(path, always_2d=True)
+    sd.play(audio, samplerate)
+    sd.wait()
 
 def main():
     print("Hello User:")
@@ -72,21 +73,27 @@ def main():
             match option:
 
                 #Recording Sound
-                case 1:
+                case "1":
 
                     name = input("Enter a name: ")
                     audio, samplerate = record_sound(seconds_recoring)
-                    save_wave(f"{name}.wav", audio, samplerate)
+                    #test Array if 0s
+                    print("shape:", audio.shape)
+                    print("min:", audio.min(), "max:", audio.max())
+
+                    path = save_wave(f"{name}.wav", audio, samplerate)
+                    sound_dic[name] = path
+                    print(sound_dic)
                 #Playing sound
-                case 2:
+                case "2":
 
                     print("Choose a sound")
-                    print(sound_list)
+                    print(sound_dic)
                     chosen = input("Enter name here:")
-                    play_sound(name)
+                    play_sound(sound_dic[chosen])
 
                 #Quit
-                case 3:
+                case "3":
                     print("bye")
                     break
         except ValueError:
