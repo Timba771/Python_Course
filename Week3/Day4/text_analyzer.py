@@ -46,7 +46,11 @@ def print_dict(word_dict):
     for elements in list(sorted_dict)[:10]:
         print(elements, "  ",sorted_dict[elements])
 
-text = read_file(FILE_DIR)
-workable_word_list = workable_text(text)
-word_count_dictonary = word_count(workable_word_list)
-print_dict(word_count_dictonary)
+def main():
+    text = read_file(FILE_DIR)
+    workable_word_list = workable_text(text)
+    word_count_dictonary = word_count(workable_word_list)
+    print_dict(word_count_dictonary)
+
+if __name__ == "__main__":
+    main()
